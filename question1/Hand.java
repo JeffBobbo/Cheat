@@ -1,10 +1,10 @@
-package package1;
+package question1;
 
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import package1.Card;
+import question1.Card;
 
 public class Hand
 {

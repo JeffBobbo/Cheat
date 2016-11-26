@@ -1,4 +1,4 @@
-import package1.Card;
+import question1.Card;
 
 public class CardTester
 {

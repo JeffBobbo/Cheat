@@ -1,5 +1,5 @@
-import package1.Hand;
-import package1.Card;
+import question1.Hand;
+import question1.Card;
 
 public class HandTester
 {

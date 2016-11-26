@@ -1,5 +1,5 @@
-import package1.Deck;
-import package1.Card;
+import question1.Deck;
+import question1.Card;
 
 public class DeckTester
 {
