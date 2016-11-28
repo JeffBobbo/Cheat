@@ -35,8 +35,9 @@ public class Deck
     if (len <= 1) // if we've got 1 or less cards, no need to shuffle
       return;
 
-    // calculate how much we need to shuffle
-    // added bonus, this'll only give us 1 shuffle for 2 cards
+    // calculate how many times to perform a swap
+    // For three decks, this gives 24,025 swaps, which should be fine
+    // despite being exponential. One deck is 2601 shuffles
     final int shuffles = (int)Math.pow(len-1, 2);
 
     Random r = new Random(); // potential issue here, each reshuffle requires
@@ -46,7 +47,7 @@ public class Deck
     {
       final int a = r.nextInt(len);
       final int b = r.nextInt(len);
-      if (a == b) // picked the same card, swapping is nop
+      if (a == b) // picked the same card, swapping is no-op
         continue;
       Collections.swap(deck, a, b);
     }
