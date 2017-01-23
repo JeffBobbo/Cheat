@@ -1,8 +1,12 @@
 package question1;
 
 import java.util.Comparator;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-public class Card implements Comparable<Card>
+public class Card implements Comparable<Card>, Serializable
 {
   public enum Suit
   {
@@ -141,6 +145,17 @@ public class Card implements Comparable<Card>
   }
 
 
+  private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException
+  {
+    is.defaultReadObject();
+  }
+  private void writeObject(ObjectOutputStream os) throws IOException
+  {
+    os.defaultWriteObject();
+  }
+
+
   private Suit suit;
   private Rank rank;
+  private static final long serialVersionUID = 100L;
 }
