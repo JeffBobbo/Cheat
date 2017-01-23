@@ -5,9 +5,14 @@ import java.util.Random;
 import java.util.Collections;
 import java.util.Iterator;
 
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import question1.Card;
 
-public class Deck implements Iterable<Card>
+public class Deck implements Iterable<Card>, Serializable
 {
   private void newDeck()
   {
@@ -121,5 +126,16 @@ public class Deck implements Iterable<Card>
     private int pos;
   }
 
+  // TODO: FIX THESE
+  private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException
+  {
+    is.defaultReadObject();
+  }
+  private void writeObject(ObjectOutputStream os) throws IOException
+  {
+    os.defaultWriteObject();
+  }
+
   private ArrayList<Card> deck;
+  private static final long serialVersionUID = 101L;
 }
