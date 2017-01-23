@@ -3,10 +3,11 @@ package question1;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
+import java.util.Iterator;
 
 import question1.Card;
 
-public class Deck
+public class Deck implements Iterable<Card>
 {
   private void newDeck()
   {
@@ -73,33 +74,52 @@ public class Deck
 
   public int size() { return deck.size(); }
 
-  /*
-  public class OddEvenIterator<Card> extends Iterator<Object> implements Iterable<Card>
+  @Override
+  public Iterator<Card> iterator()
+  {
+    return new OddEvenIterator();
+  }
+
+  public final class OddEvenIterator implements Iterator<Card>
   {
     public OddEvenIterator()
     {
-      pos = size() - 1;
+      pos = 0;
     }
 
     public boolean hasNext()
     {
-      return pos >= 0;
+      final int n = pos;
+      if (n >= size())
+      {
+        if (n % 2 == 1)
+          return false;
+      }
+      return true;
     }
 
     public Card next()
     {
-      return hasNext() == true ? deck.get(pos--) : null;
+      final int n = pos;
+      if (n >= size())
+      {
+        if (n % 2 == 0)
+          pos = 1;
+        else
+          return null;
+      }
+      Card c = deck.get(pos);
+      pos += 2;
+      return c;
     }
 
-    @Override
-    public Iterator<Card> iterator()
+    public void remove()
     {
-      return new OddEvenIterator();
+      throw new UnsupportedOperationException();
     }
 
     private int pos;
   }
-  */
 
   private ArrayList<Card> deck;
 }
