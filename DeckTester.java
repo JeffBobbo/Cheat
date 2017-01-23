@@ -53,9 +53,13 @@ public class DeckTester
     sb.append(testDeckDeal(deck, new Card(Card.Suit.SPADES, Card.Rank.ACE)));
     sb.append("  Deck.size() 2").append(System.lineSeparator());
     sb.append(testDeckSize(deck, 51));
-    deck.shuffle();
-    System.out.println(sb);
     System.out.println(deck);
+    for (Card c : deck)
+      System.out.print(c + " ");
+    System.out.print(System.lineSeparator());
+    deck.shuffle();
+    System.out.println(deck);
+    System.out.println(sb);
   }
 
 
