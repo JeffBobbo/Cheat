@@ -4,13 +4,18 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import question1.Card;
 
 public class Hand
 {
   public Hand()
   {
-    hand = new ArrayList<Card>();
+    hand = new ArrayList<Card>(); // replace with LinkedHashSet
     // bad, hard coded values
     suits = new int[4];
     ranks = new int[13];
@@ -29,7 +34,7 @@ public class Hand
 
   public int size() { return hand.size(); }
   public int countSuit(final Card.Suit s) { return suits[s.ordinal()]; }
-  public int countRank(final Card.Rank r) { return suits[r.ordinal()]; }
+  public int countRank(final Card.Rank r) { return ranks[r.ordinal()]; }
 
   public int handValue()
   {
@@ -58,11 +63,14 @@ public class Hand
 
   boolean removeCard(final Card c)
   {
+    suits[c.getSuit().ordinal()]--;
+    ranks[c.getRank().ordinal()]--;
     return hand.remove(c);
   }
   boolean removeHand(final Hand h)
   {
-    // TODO
+    for (Card c : h.hand)
+      removeCard(c);
     return false;
   }
   Card removeAt(final int pos)
@@ -71,7 +79,8 @@ public class Hand
       return null;
     if (pos > size())
       return null;
-    return hand.remove(pos);
+    Card c = hand.get(pos);
+    return removeCard(hand.get(pos)) ? c : null;
   }
 
   public void sortAscending()
@@ -136,7 +145,19 @@ public class Hand
     return sb.toString();
   }
 
+  // TODO: FIX THESE
+  private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException
+  {
+    is.defaultReadObject();
+  }
+  private void writeObject(ObjectOutputStream os) throws IOException
+  {
+    os.defaultWriteObject();
+  }
+
+
   private ArrayList<Card> hand;
+  private static final long serialVersionUID = 102L;
   // bad, hard coded
   private int[] suits;
   private int[] ranks;
