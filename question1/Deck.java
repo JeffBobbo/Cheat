@@ -120,7 +120,10 @@ public class Deck implements Iterable<Card>, Serializable
 
     public void remove()
     {
-      throw new UnsupportedOperationException();
+      // remove the card
+      deck.remove(pos);
+      // fix the position
+      pos -= 2;
     }
 
     private int pos;

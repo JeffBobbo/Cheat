@@ -137,11 +137,11 @@ public class Card implements Comparable<Card>, Serializable
 
   public static int difference(final Card c0, final Card c1)
   {
-    return c1.rank.value - c0.rank.value;
+    return c1.rank.ordinal() - c0.rank.ordinal();
   }
   public static int differenceValue(final Card c0, final Card c1)
   {
-    return c1.rank.ordinal() - c0.rank.ordinal();
+    return c1.rank.value - c0.rank.value;
   }
 
 

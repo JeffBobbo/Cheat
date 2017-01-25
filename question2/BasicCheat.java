@@ -1,10 +1,20 @@
 package question2;
 
+import java.util.Iterator;
+import java.util.Scanner;
+
+import question1.Card;
+import question1.Hand;
+import question1.Deck;
+
+import question2.Player;
+import question2.Bid;
+
 public class BasicCheat implements CardGame
 {
+  public static final int MINPLAYERS = 5;
   private Player[] players;
   private int nosPlayers;
-  public static final int MINPLAYERS = 5;
   private int currentPlayer;
   private Hand discards;
   private Bid currentBid;
@@ -98,7 +108,7 @@ public class BasicCheat implements CardGame
     Deck d = new Deck();
     d.shuffle();
     //Deal cards to players
-    Iterator<Card> it=d.iterator();
+    Iterator<Card> it = d.iterator();
     int count = 0;
     while (it.hasNext())
     {
@@ -127,11 +137,11 @@ public class BasicCheat implements CardGame
       playTurn();
       System.out.println(" Current discards =\n" + discards);
       System.out.println(" Turn " + ++c +  " Complete. Press any key to continue or enter Q to quit>");
-      String str = in.nextLine();
+      String str = "";// = in.nextLine();
       if (str.equals("Q") || str.equals("q") || str.equals("quit"))
         finished = true;
       int w = winner();
-      if (w > 0)
+      if (w >= 0)
       {
         System.out.println("The Winner is Player " + (w+1));
         finished = true;
@@ -143,7 +153,7 @@ public class BasicCheat implements CardGame
   {
     for (Card c : b.getHand())
     {
-      if (c.getRank() != b.r)
+      if (c.getRank() != b.getRank())
         return true;
     }
     return false;

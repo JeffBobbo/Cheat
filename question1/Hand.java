@@ -1,8 +1,9 @@
 package question1;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import java.io.Serializable;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.ObjectOutputStream;
 
 import question1.Card;
 
-public class Hand
+public class Hand implements Iterable<Card>
 {
   public Hand()
   {
@@ -24,12 +25,12 @@ public class Hand
   {
     this();
     for (Card c : cards)
-      addCard(c);
+      add(c);
   }
   public Hand(final Hand h)
   {
     this();
-    addHand(h);
+    add(h);
   }
 
   public int size() { return hand.size(); }
@@ -44,36 +45,36 @@ public class Hand
     return v;
   }
 
-  public void addCard(final Card c)
+  public void add(final Card c)
   {
     hand.add(c);
     suits[c.getSuit().ordinal()]++;
     ranks[c.getRank().ordinal()]++;
   }
-  public void addCollection(Collection<Card> cards)
+  public void add(Collection<Card> cards)
   {
     for (Card c : cards)
-      addCard(c);
+      add(c);
   }
-  public void addHand(final Hand h)
+  public void add(Hand h)
   {
     for (Card c : h.hand)
-      addCard(c);
+      add(c);
   }
 
-  boolean removeCard(final Card c)
+  public boolean removeCard(final Card c)
   {
     suits[c.getSuit().ordinal()]--;
     ranks[c.getRank().ordinal()]--;
     return hand.remove(c);
   }
-  boolean removeHand(final Hand h)
+  public boolean removeHand(final Hand h)
   {
     for (Card c : h.hand)
       removeCard(c);
     return false;
   }
-  Card removeAt(final int pos)
+  public Card removeAt(final int pos)
   {
     if (pos < 0)
       return null;
@@ -155,6 +156,11 @@ public class Hand
     os.defaultWriteObject();
   }
 
+  @Override
+  public Iterator<Card> iterator()
+  {
+    return hand.iterator();
+  }
 
   private ArrayList<Card> hand;
   private static final long serialVersionUID = 102L;
