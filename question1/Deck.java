@@ -82,7 +82,7 @@ public class Deck implements Iterable<Card>, Serializable
   @Override
   public Iterator<Card> iterator()
   {
-    return new OddEvenIterator();
+    return deck.iterator();
   }
 
   public final class OddEvenIterator implements Iterator<Card>
@@ -120,10 +120,7 @@ public class Deck implements Iterable<Card>, Serializable
 
     public void remove()
     {
-      // remove the card
-      deck.remove(pos);
-      // fix the position
-      pos -= 2;
+      throw new UnsupportedOperationException();
     }
 
     private int pos;

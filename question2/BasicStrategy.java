@@ -21,10 +21,8 @@ public class BasicStrategy implements Strategy
   */
   public boolean cheat(Bid b, Hand h)
   {
-    // using this method would require doing double the work we'd have to do
-    // in the best case, and increase it by half in the worse case
-    // thus, we're going to leave it as a stub
-    return false;
+    return h.countRank(b.getRank()) == 0 &&
+      h.countRank(Card.Rank.getNext(b.getRank())) == 0;
   }
 
  /**
@@ -38,40 +36,24 @@ public class BasicStrategy implements Strategy
   public Bid chooseBid(Bid b, Hand h, boolean cheat)
   {
     Hand play = new Hand();
-    Card.Rank rank = null;
-    int wiggle = 0; // 'wiggle' is how far out we can go
-    // this'll only go to 1, but we could increase this higher if we wanted
-    // to allow players more range on bids (e.g., bidding 5s on 2s).
-    while (wiggle <= 1 && play.size() == 0)
-    {
-      for (Card c : h)
-      {
-        // for each card, find those that match the wiggle room
-        int diff = c.getRank().ordinal() - b.getRank().ordinal();
-        // specification definition for difference says it should compare the
-        // difference of Cards, but we've only got a rank so we can't use it.
-        if (diff == wiggle)
-        {
-          if (rank != null || c.getRank() == rank)
-          {
-            rank = c.getRank();
-            play.add(c);
-          }
-        }
-      }
-      ++wiggle;
-    }
-    if (play.size() > 0) // we have cards, so play 'em
-    {
-      h.removeHand(play);
-      return new Bid(play, rank);
-    }
-    else // we've exhausted all our wiggle room and still have no cards, cheat!
+    if (cheat) // we have cards, so play 'em
     {
       Random r = new Random(); // really bad, but oh well
       int pos = r.nextInt(h.size());
       play.add(h.removeAt(pos));
       return new Bid(play, Card.Rank.getNext(b.getRank()));
+    }
+    else // we've exhausted all our wiggle room and still have no cards, cheat!
+    {
+      Card.Rank target = h.countRank(b.getRank()) > 0 ? b.getRank() :
+        Card.Rank.getNext(b.getRank());
+      for (Card c : h)
+      {
+        if (c.getRank().equals(target))
+          play.add(c);
+      }
+      h.removeHand(play);
+      return new Bid(play, target);
     }
   }
 
