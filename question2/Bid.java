@@ -17,10 +17,10 @@ public class Bid
   }
 
   public void setHand(Hand hand) { h = hand; }
-  public void setRank(Card.Rank rank){ r = rank; }
+  public void setRank(Card.Rank rank) { r = rank; }
 
   public Hand getHand() { return h; }
-  public int getCount(){ return h.size(); }
+  public int getCount() { return h.size(); }
   public Card.Rank getRank() { return r; }
 
   @Override

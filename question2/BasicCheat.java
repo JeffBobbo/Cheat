@@ -7,8 +7,13 @@ import question1.Card;
 import question1.Hand;
 import question1.Deck;
 
+import question2.CardGame;
 import question2.Player;
 import question2.Bid;
+
+import question2.BasicPlayer;
+import question2.BasicStrategy;
+import question2.HumanStrategy;
 
 public class BasicCheat implements CardGame
 {
@@ -29,7 +34,8 @@ public class BasicCheat implements CardGame
   {
     nosPlayers = n;
     players = new Player[nosPlayers];
-    for (int i = 0; i < nosPlayers; ++i)
+    players[0] = (new BasicPlayer(new HumanStrategy(), this));
+    for (int i = 1; i < nosPlayers; ++i)
       players[i] = (new BasicPlayer(new BasicStrategy(), this));
 
     currentBid = new Bid();
@@ -63,7 +69,7 @@ public class BasicCheat implements CardGame
             players[currentPlayer].addHand(discards);
             System.out.println("Player cheats!");
             System.out.println("Adding cards to player "+
-                (currentPlayer+1) + players[currentPlayer]);
+                (currentPlayer+1) + " " + players[currentPlayer]);
           }
           else //CHEAT CALLED INCORRECTLY
           {

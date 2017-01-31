@@ -11,6 +11,7 @@ public class BasicStrategy implements Strategy
 {
   public BasicStrategy()
   {
+    rg = new Random();
   }
  /**
   * Decides on whether to cheat or not
@@ -36,17 +37,32 @@ public class BasicStrategy implements Strategy
   public Bid chooseBid(Bid b, Hand h, boolean cheat)
   {
     Hand play = new Hand();
-    if (cheat) // we have cards, so play 'em
+    if (cheat) // we're going to cheat. Grin innanely.
     {
-      Random r = new Random(); // really bad, but oh well
-      int pos = r.nextInt(h.size());
+      int pos = rg.nextInt(h.size());
       play.add(h.remove(pos));
       return new Bid(play, b.getRank().getNext());
     }
-    else // we've exhausted all our wiggle room and still have no cards, cheat!
+    else // play it safe
     {
-      Card.Rank target = h.countRank(b.getRank()) > 0 ? b.getRank() :
-        b.getRank().getNext();
+      Card.Rank target;
+      // if we have some of the first card
+      if (h.countRank(b.getRank()) > 0)
+      {
+        // and of the second
+        if (h.countRank(b.getRank().getNext()) > 0 &&
+          // and it's of lower rank than the first
+          b.getRank().getNext().ordinal() - b.getRank().ordinal() < 0
+        )
+          target = b.getRank().getNext(); // play the second
+        else
+          target = b.getRank(); // play the first
+      }
+      else
+      {
+        // play the second, as we can't play the first
+        target = b.getRank().getNext();
+      }
       for (Card c : h)
       {
         if (c.getRank().equals(target))
@@ -64,10 +80,10 @@ public class BasicStrategy implements Strategy
   */
   public boolean callCheat(Hand h, Bid b)
   {
-    // how many cards are left unaccounted for
-    int left = 4 - h.countRank(b.getRank());
-    // if what is left, minus the number of cards in the bid is less than 0
-    // then this a cheat
-    return left - b.getCount() < 0;
+    // if the number of cards I have, plus the number in the bid is greater than four
+    // then this is a cheat
+    return h.countRank(b.getRank()) + b.getCount() > 4;
   }
+
+  private Random rg;
 }

@@ -18,17 +18,16 @@ public class Card implements Comparable<Card>, Serializable
     @Override
     public String toString()
     {
-      // more space considerate than the full name
       switch (this)
       {
         case CLUBS:
-          return "C";
+          return "Clubs";
         case DIAMONDS:
-          return "D";
+          return "Diamonds";
         case HEARTS:
-          return "H";
+          return "Hearts";
         case SPADES:
-          return "S";
+          return "Spades";
       }
       return "?";
     }
@@ -72,6 +71,40 @@ public class Card implements Comparable<Card>, Serializable
         default:
           return String.valueOf(value);
       }
+    }
+
+    public static Rank fromString(String str)
+    {
+      switch (str)
+      {
+        case "j":
+        case "jack":
+          return Card.Rank.JACK;
+        case "q":
+        case "queen":
+          return Card.Rank.QUEEN;
+        case "k":
+        case "king":
+          return Card.Rank.KING;
+        case "a":
+        case "ace":
+          return Card.Rank.ACE;
+      }
+      int i;
+      try
+      {
+        i = Integer.valueOf(str);
+      }
+      catch (Exception e)
+      {
+        return null;
+      }
+      if (i < 2 || i > 13)
+        return null;
+      Rank r = Rank.TWO;
+      while (r.getValue() != i)
+        r = r.getNext();
+      return r;
     }
     private int value;
     private Rank(int v) { value = v; }
