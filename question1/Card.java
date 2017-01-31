@@ -21,13 +21,13 @@ public class Card implements Comparable<Card>, Serializable
       switch (this)
       {
         case CLUBS:
-          return "Clubs";
+          return "C";
         case DIAMONDS:
-          return "Diamonds";
+          return "D";
         case HEARTS:
-          return "Hearts";
+          return "H";
         case SPADES:
-          return "Spades";
+          return "S";
       }
       return "?";
     }
