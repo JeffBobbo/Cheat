@@ -38,4 +38,6 @@ public interface Strategy
   * @return true if this player is going to call cheat  on the last play b
   */
   public boolean callCheat(Hand h, Bid b);
+
+  public void broadcastCheat(int player, int caller, boolean correct);
 }

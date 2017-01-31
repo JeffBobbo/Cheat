@@ -6,10 +6,11 @@ import question1.Card;
 import question1.Hand;
 
 import question2.Strategy;
+import question2.BasicStrategy;
 
-public class HumanStrategy implements Strategy
+public class ThinkerStrategy extends BasicStrategy
 {
-  public HumanStrategy()
+  public ThinkerStrategy()
   {
   }
  /**
@@ -19,11 +20,8 @@ public class HumanStrategy implements Strategy
   * @param h   The players current hand
   * @return true if the player will cheat, false if not
   */
-  public boolean cheat(Bid b, Hand h)
-  {
-    // human don't need this, so left as stub
-    return false;
-  }
+  // inherit from BasicStrategy
+  //public boolean cheat(Bid b, Hand h);
 
  /**
   * @param b   the bid the player has to follow.
@@ -128,10 +126,5 @@ public class HumanStrategy implements Strategy
       else
         System.out.println("Sorry, didn't understand that");
     }
-  }
-
-  public void broadcastCheat(int player, int caller, boolean correct)
-  {
-    // nothing to do
   }
 }
