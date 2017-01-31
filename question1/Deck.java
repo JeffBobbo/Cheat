@@ -41,12 +41,9 @@ public class Deck implements Iterable<Card>, Serializable
     if (len <= 1) // if we've got 1 or less cards, no need to shuffle
       return;
 
-    Random r = new Random(); // potential issue here, each reshuffle requires
-    // a reseed of the rng, which can be exploited
-
     for (int i = len-1; i >= 1; --i)
     {
-      int j = r.nextInt(i+1);
+      int j = rg.nextInt(i+1);
       Collections.swap(deck, i, j);
     }
   }
@@ -55,6 +52,7 @@ public class Deck implements Iterable<Card>, Serializable
   {
     deck = new ArrayList<Card>();
 
+    rg = new Random();
     newDeck(); // fill the deck
   }
 
@@ -126,16 +124,29 @@ public class Deck implements Iterable<Card>, Serializable
     private int pos;
   }
 
-  // TODO: FIX THESE
   private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException
   {
-    is.defaultReadObject();
+    int sz = (int)is.readObject();
+    for (int i = 0; i <= sz/2; ++i)
+      deck.add((Card)is.readObject());
+    for (int i = sz/2, j = 1; i < sz; ++i, j+=2)
+
+      deck.add(j, (Card)is.readObject());
+    rg = (Random)is.readObject();
   }
   private void writeObject(ObjectOutputStream os) throws IOException
   {
-    os.defaultWriteObject();
+    os.writeObject(size());
+    OddEvenIterator it = new OddEvenIterator();
+    while (it.hasNext())
+    {
+      Card c = it.next();
+      os.writeObject(c);
+    }
+    os.writeObject(rg);
   }
 
   private ArrayList<Card> deck;
+  private Random rg;
   private static final long serialVersionUID = 101L;
 }

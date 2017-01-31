@@ -16,10 +16,10 @@ public class Hand implements Iterable<Card>
 {
   public Hand()
   {
-    hand = new ArrayList<Card>(); // replace with LinkedHashSet
-    // bad, hard coded values
+    hand = new ArrayList<Card>();
     suits = new int[4];
     ranks = new int[13];
+    score = 0;
   }
   public Hand(Card[] cards)
   {
@@ -36,20 +36,14 @@ public class Hand implements Iterable<Card>
   public int size() { return hand.size(); }
   public int countSuit(final Card.Suit s) { return suits[s.ordinal()]; }
   public int countRank(final Card.Rank r) { return ranks[r.ordinal()]; }
-
-  public int handValue()
-  {
-    int v = 0;
-    for (Card c : hand)
-      v += c.getRank().getValue();
-    return v;
-  }
+  public int handValue() { return score; }
 
   public void add(final Card c)
   {
     hand.add(c);
     suits[c.getSuit().ordinal()]++;
     ranks[c.getRank().ordinal()]++;
+    score += c.getRank().getValue();
   }
   public void add(Collection<Card> cards)
   {
@@ -62,26 +56,27 @@ public class Hand implements Iterable<Card>
       add(c);
   }
 
-  public boolean removeCard(final Card c)
+  public boolean remove(final Card c)
   {
     suits[c.getSuit().ordinal()]--;
     ranks[c.getRank().ordinal()]--;
+    score -= c.getRank().getValue();
     return hand.remove(c);
   }
-  public boolean removeHand(final Hand h)
+  public boolean remove(final Hand h)
   {
     for (Card c : h.hand)
-      removeCard(c);
+      remove(c);
     return false;
   }
-  public Card removeAt(final int pos)
+  public Card remove(final int pos)
   {
     if (pos < 0)
       return null;
     if (pos > size())
       return null;
     Card c = hand.get(pos);
-    return removeCard(hand.get(pos)) ? c : null;
+    return remove(hand.get(pos)) ? c : null;
   }
 
   public void sortAscending()
@@ -127,12 +122,10 @@ public class Hand implements Iterable<Card>
       for (int j = 1; j < ranks.size(); ++j)
       {
         if (!ranks.get((i+j)%ranks.size()).equals(r = r.getNext()))
-          okay = false;
+          return false;
       }
-      if (okay)
-        return true;
+      return true;
     }
-
     return false;
   }
 
@@ -163,8 +156,10 @@ public class Hand implements Iterable<Card>
   }
 
   private ArrayList<Card> hand;
-  private static final long serialVersionUID = 102L;
-  // bad, hard coded
+
   private int[] suits;
   private int[] ranks;
+  private int score;
+
+  private static final long serialVersionUID = 102L;
 }

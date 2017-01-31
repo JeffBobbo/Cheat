@@ -40,7 +40,7 @@ public class BasicStrategy implements Strategy
     {
       Random r = new Random(); // really bad, but oh well
       int pos = r.nextInt(h.size());
-      play.add(h.removeAt(pos));
+      play.add(h.remove(pos));
       return new Bid(play, b.getRank().getNext());
     }
     else // we've exhausted all our wiggle room and still have no cards, cheat!
@@ -52,7 +52,7 @@ public class BasicStrategy implements Strategy
         if (c.getRank().equals(target))
           play.add(c);
       }
-      h.removeHand(play);
+      h.remove(play);
       return new Bid(play, target);
     }
   }

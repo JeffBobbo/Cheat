@@ -18,6 +18,7 @@ public class Card implements Comparable<Card>, Serializable
     @Override
     public String toString()
     {
+      // more space considerate than the full name
       switch (this)
       {
         case CLUBS:
@@ -57,6 +58,7 @@ public class Card implements Comparable<Card>, Serializable
     @Override
     public String toString()
     {
+      // more space considerate than the full name
       switch (this)
       {
         case JACK:
@@ -147,11 +149,13 @@ public class Card implements Comparable<Card>, Serializable
 
   private void readObject(ObjectInputStream is) throws ClassNotFoundException, IOException
   {
-    is.defaultReadObject();
+    suit = (Card.Suit)is.readObject();
+    rank = (Card.Rank)is.readObject();
   }
   private void writeObject(ObjectOutputStream os) throws IOException
   {
-    os.defaultWriteObject();
+    os.writeObject(suit);
+    os.writeObject(rank);
   }
 
 
