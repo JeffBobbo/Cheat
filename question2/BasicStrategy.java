@@ -22,7 +22,7 @@ public class BasicStrategy implements Strategy
   public boolean cheat(Bid b, Hand h)
   {
     return h.countRank(b.getRank()) == 0 &&
-      h.countRank(Card.Rank.getNext(b.getRank())) == 0;
+      h.countRank(b.getRank().getNext()) == 0;
   }
 
  /**
@@ -41,12 +41,12 @@ public class BasicStrategy implements Strategy
       Random r = new Random(); // really bad, but oh well
       int pos = r.nextInt(h.size());
       play.add(h.removeAt(pos));
-      return new Bid(play, Card.Rank.getNext(b.getRank()));
+      return new Bid(play, b.getRank().getNext());
     }
     else // we've exhausted all our wiggle room and still have no cards, cheat!
     {
       Card.Rank target = h.countRank(b.getRank()) > 0 ? b.getRank() :
-        Card.Rank.getNext(b.getRank());
+        b.getRank().getNext();
       for (Card c : h)
       {
         if (c.getRank().equals(target))

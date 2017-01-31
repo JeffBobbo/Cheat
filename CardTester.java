@@ -54,7 +54,7 @@ public class CardTester
   private static String testRankGetNext(final Card.Rank r, final Card.Rank expect)
   {
     StringBuilder sb = new StringBuilder();
-    if (Card.Rank.getNext(r) == expect)
+    if (r.getNext() == expect)
     {
       sb.append("    PASSED").append(System.lineSeparator());
       ++passed;

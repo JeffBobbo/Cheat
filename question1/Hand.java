@@ -126,7 +126,7 @@ public class Hand implements Iterable<Card>
       Card.Rank r = ranks.get(i);
       for (int j = 1; j < ranks.size(); ++j)
       {
-        if (!ranks.get((i+j)%ranks.size()).equals(r = Card.Rank.getNext(r)))
+        if (!ranks.get((i+j)%ranks.size()).equals(r = r.getNext()))
           okay = false;
       }
       if (okay)

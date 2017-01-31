@@ -20,16 +20,16 @@ public class Deck implements Iterable<Card>, Serializable
       deck.clear(); // clear it out so we've got no cards
 
     // fill it with cards from each suit in order
-    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = Card.Rank.getNext(r))
+    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = r.getNext())
       deck.add(new Card(Card.Suit.CLUBS, r));
     deck.add(new Card(Card.Suit.CLUBS, Card.Rank.ACE));
-    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = Card.Rank.getNext(r))
+    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = r.getNext())
       deck.add(new Card(Card.Suit.DIAMONDS, r));
     deck.add(new Card(Card.Suit.DIAMONDS, Card.Rank.ACE));
-    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = Card.Rank.getNext(r))
+    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = r.getNext())
       deck.add(new Card(Card.Suit.HEARTS, r));
     deck.add(new Card(Card.Suit.HEARTS, Card.Rank.ACE));
-    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = Card.Rank.getNext(r))
+    for (Card.Rank r = Card.Rank.TWO; r != Card.Rank.ACE; r = r.getNext())
       deck.add(new Card(Card.Suit.SPADES, r));
     deck.add(new Card(Card.Suit.SPADES, Card.Rank.ACE));
   }

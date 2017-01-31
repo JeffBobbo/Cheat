@@ -49,9 +49,9 @@ public class Card implements Comparable<Card>, Serializable
     KING(10),
     ACE(11);
 
-    public static Rank getNext(final Rank r)
+    public Rank getNext()
     {
-      return Rank.values()[(r.ordinal() + 1) % Rank.values().length];
+      return Rank.values()[(ordinal() + 1) % Rank.values().length];
     }
 
     @Override
