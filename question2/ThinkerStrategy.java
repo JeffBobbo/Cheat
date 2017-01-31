@@ -1,7 +1,5 @@
 package question2;
 
-import java.util.Scanner;
-
 import question1.Card;
 import question1.Hand;
 
@@ -12,6 +10,8 @@ public class ThinkerStrategy extends BasicStrategy
 {
   public ThinkerStrategy()
   {
+    super();
+    known = new ArrayList<Bid>();
   }
  /**
   * Decides on whether to cheat or not
@@ -20,8 +20,10 @@ public class ThinkerStrategy extends BasicStrategy
   * @param h   The players current hand
   * @return true if the player will cheat, false if not
   */
-  // inherit from BasicStrategy
-  //public boolean cheat(Bid b, Hand h);
+  public boolean cheat(Bid b, Hand h)
+  {
+    return super() ? true : rg.nextDouble() < 0.05;
+  }
 
  /**
   * @param b   the bid the player has to follow.
@@ -33,78 +35,10 @@ public class ThinkerStrategy extends BasicStrategy
   */
   public Bid chooseBid(Bid b, Hand h, boolean cheat)
   {
-    Hand play = new Hand();
-    Card.Rank r = Card.Rank.TWO;
-    System.out.println("You have:");
-    System.out.println(h);
-    for (int z = 0; z < 13; ++z)
+    if (cheat)
     {
-      int c = h.countRank(r);
-      if (c != 0)
-        System.out.println("  " + c + "x" + r);
-      r = r.getNext();
+
     }
-    r = null;
-    Scanner in = new Scanner(System.in);
-    while (true)
-    { 
-      System.out.print("What rank would you like to play?\n> ");
-      String ans = in.nextLine().toLowerCase();
-      
-      r = Card.Rank.fromString(ans);
-      if (r == null)
-      {
-        System.out.println("Invalid card");
-        continue;
-      }
-      if (h.countRank(r) > 0)
-        break;
-      System.out.println("You don't have any of this card");
-    }
-    int num = 0;
-    int count = h.countRank(r);
-    while (num == 0)
-    {
-      System.out.print("How many would you like to play? [1.." + count + "]\n> ");
-      try
-      {
-        num = Integer.valueOf(in.nextLine());
-        if (num > count)
-        {
-          System.out.println("You don't have that many cards.");
-          num = 0;
-        }
-        if (num <= 0)
-        {
-          System.out.println("You can't play no cards.");
-          num = 0;
-        }
-      }
-      catch (Exception e)
-      {
-      }
-    }
-    for (Card c : h)
-    {
-      if (num > 0 && c.getRank().equals(r))
-      {
-        play.add(c);
-        --num;
-      }
-    }
-    h.remove(play);
-    if (r != b.getRank() && r != b.getRank().getNext())
-    {
-      Card.Rank c = null;
-      while (c == null)
-      {
-        System.out.print("This is a cheat, what would you like to claim it is?\n> ");
-        String ans = in.nextLine().toLowerCase();
-        c = Card.Rank.fromString(ans);
-      }
-      r = c;
-    }
-    return new Bid(play, r);
   }
 
  /**
@@ -114,17 +48,13 @@ public class ThinkerStrategy extends BasicStrategy
   */
   public boolean callCheat(Hand h, Bid b)
   {
-    Scanner in = new Scanner(System.in);
-    while (true)
-    {
-      System.out.print("Would you like to call cheat? [y/n]\n> ");
-      String ans = in.nextLine().toLowerCase();
-      if (ans.equals("y") || ans.equals("yes"))
-        return true;
-      else if (ans.equals("n") || ans.equals("no"))
-        return false;
-      else
-        System.out.println("Sorry, didn't understand that");
-    }
   }
+
+  public void broadcastCheat(int player, int caller, boolean correct)
+  {
+    known.clear();
+  }
+
+  private ArrayList<Bid> known;
+
 }
