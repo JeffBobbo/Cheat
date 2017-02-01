@@ -37,7 +37,7 @@ public interface Strategy
   * @param b the current bid
   * @return true if this player is going to call cheat  on the last play b
   */
-  public boolean callCheat(Hand h, Bid b);
+  public boolean callCheat(Hand h, Bid b, int player);
 
   public void broadcastCheat(int player, int caller, boolean correct);
 }

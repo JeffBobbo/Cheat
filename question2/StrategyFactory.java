@@ -4,7 +4,7 @@ import question2.Strategy;
 import question2.BasicStrategy;
 import question2.HumanStrategy;
 import question2.ThinkerStrategy;
-//import question2.MyStrategy;
+import question2.MyStrategy;
 
 import java.util.Random;
 
@@ -15,8 +15,8 @@ public class StrategyFactory
     BASIC,
     HUMAN,
     THINKER,
+    MY
   }
-//    MY
 
   public StrategyFactory()
   {
@@ -25,14 +25,16 @@ public class StrategyFactory
 
   public StrategyType choose()
   {
-    switch (rg.nextInt(3))
+    switch (rg.nextInt(4))
     {
       case 0:
         return StrategyType.BASIC;
       case 1:
-        return StrategyType.HUMAN;
+        //return StrategyType.HUMAN;
       case 2:
         return StrategyType.THINKER;
+      case 3:
+        return StrategyType.MY;
     }
     return null;
   }
@@ -47,6 +49,8 @@ public class StrategyFactory
         return new HumanStrategy();
       case THINKER:
         return new ThinkerStrategy();
+      case MY:
+        return new MyStrategy();
     }
     return null;
   }

@@ -71,9 +71,9 @@ public class BasicPlayer implements Player
   * @param b: the last players bid
   * @return true if calling the last player a cheat.
   */
-  public boolean callCheat(Bid b)
+  public boolean callCheat(Bid b, int player)
   {
-    return strategy.callCheat(hand, b);
+    return strategy.callCheat(hand, b, player);
   }
 
   public void broadcastCheat(int player, int caller, boolean correct)

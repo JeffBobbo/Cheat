@@ -97,7 +97,7 @@ public class ThinkerStrategy extends BasicStrategy
   * @param b the current bid
   * @return true if this player is going to call cheat  on the last play b
   */
-  public boolean callCheat(Hand h, Bid b)
+  public boolean callCheat(Hand h, Bid b, int player)
   {
     int count = 0;
     // add up previous bids
@@ -124,8 +124,8 @@ public class ThinkerStrategy extends BasicStrategy
     played.clear();
   }
 
-  private ArrayList<Bid> played;
-  private static final double CHEAT_RATE = 0.15;
-  private static final double PLAY_RANDOM_RATE = 0.75;
-  private static final double CHEAT_CALL_MULT = 0.025;
+  protected ArrayList<Bid> played;
+  protected static final double CHEAT_RATE = 0.15;
+  protected static final double PLAY_RANDOM_RATE = 0.75;
+  protected static final double CHEAT_CALL_MULT = 0.025;
 }

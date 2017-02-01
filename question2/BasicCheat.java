@@ -64,7 +64,7 @@ public class BasicCheat implements CardGame
     {
       if (i != currentPlayer)
       {
-        cheat = players[i].callCheat(currentBid);
+        cheat = players[i].callCheat(currentBid, currentPlayer);
         if (cheat)
         {
           System.out.println("Player called cheat by Player " + (i+1));

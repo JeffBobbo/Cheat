@@ -6,14 +6,15 @@ import question1.Card;
 import question1.Hand;
 
 import question2.Strategy;
-import question2.BasicStrategy;
+import question2.ThinkerStrategy;
 
-public class MyStrategy extends BasicStrategy
+public class MyStrategy extends ThinkerStrategy
 {
   public MyStrategy()
   {
     super();
-    played = new ArrayList<Bid>();
+    distributed = new ArrayList<Card>();
+    lastDistTarget = -1;
   }
  /**
   * Decides on whether to cheat or not
@@ -22,10 +23,9 @@ public class MyStrategy extends BasicStrategy
   * @param h   The players current hand
   * @return true if the player will cheat, false if not
   */
-  public boolean cheat(Bid b, Hand h)
-  {
-    return super.cheat(b, h) || rg.nextDouble() < CHEAT_RATE;
-  }
+  //public boolean cheat(Bid b, Hand h)
+  //{
+  //}
 
  /**
   * @param b   the bid the player has to follow.
@@ -55,23 +55,30 @@ public class MyStrategy extends BasicStrategy
     }
     else
     {
-      int total = h.countRank(b.getRank()) + h.countRank(b.getRank().getNext());
-
-      // work out whichever rank is higher
-      Card.Rank high = b.getRank().getNext();
-      Card.Rank low  = b.getRank();
-      if (high.ordinal() < b.getRank().ordinal())
+      Card.Rank target;
+      if (h.countRank(b.getRank()) == 0 || h.countRank(b.getRank().getNext()) == 0)
       {
-        low = high;
-        high = b.getRank();
+        target = h.countRank(b.getRank()) == 0 ? b.getRank().getNext() : b.getRank();
       }
+      else
+      {
+        int total = h.countRank(b.getRank()) + h.countRank(b.getRank().getNext());
+        // work out whichever rank is higher
+        Card.Rank high = b.getRank().getNext();
+        Card.Rank low  = b.getRank();
+        if (high.ordinal() < b.getRank().ordinal())
+        {
+          low = high;
+          high = b.getRank();
+        }
 
-      double r = (double)h.countRank(high) / (double)total;
+        double r = (double)h.countRank(high) / (double)total;
 
-      // use r, which is percentage of high cards as the roll chance
-      // if we roll less than r, play a high card.
-      // this'll conserve our higher card when we've got less of them
-      Card.Rank target = rg.nextDouble() < r ? high : low;
+        // use r, which is percentage of high cards as the roll chance
+        // if we roll less than r, play a high card.
+        // this'll conserve our higher card when we've got less of them
+        target = rg.nextDouble() < r ? high : low;
+      }
       int num = rg.nextDouble() > PLAY_RANDOM_RATE ?
         rg.nextInt(h.countRank(target)) + 1 : // play random amount
         h.countRank(target); //full amount
@@ -97,13 +104,23 @@ public class MyStrategy extends BasicStrategy
   * @param b the current bid
   * @return true if this player is going to call cheat  on the last play b
   */
-  public boolean callCheat(Hand h, Bid b)
+  public boolean callCheat(Hand h, Bid b, int player)
   {
     int count = 0;
     // add up previous bids
     for (Bid bid : played)
     {
       for (Card c : bid.getHand())
+      {
+        if (c.getRank() == b.getRank())
+          ++count;
+      }
+    }
+
+    // and count up cards we know others have, or had
+    if (lastDistTarget >= 0 && lastDistTarget != player)
+    {
+      for (Card c : distributed)
       {
         if (c.getRank() == b.getRank())
           ++count;
@@ -121,11 +138,16 @@ public class MyStrategy extends BasicStrategy
 
   public void broadcastCheat(int player, int caller, boolean correct)
   {
+    lastDistTarget = correct ? player : caller;
+    distributed.clear();
+    for (Bid bid : played)
+    {
+      for (Card c : bid.getHand())
+        distributed.add(c);
+    }
     played.clear();
   }
 
-  private ArrayList<Bid> played;
-  private static final double CHEAT_RATE = 0.15;
-  private static final double PLAY_RANDOM_RATE = 0.75;
-  private static final double CHEAT_CALL_MULT = 0.025;
+  private ArrayList<Card> distributed;
+  private int lastDistTarget;
 }

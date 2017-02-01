@@ -78,7 +78,7 @@ public class BasicStrategy implements Strategy
   * @param b the current bid
   * @return true if this player is going to call cheat  on the last play b
   */
-  public boolean callCheat(Hand h, Bid b)
+  public boolean callCheat(Hand h, Bid b, int player)
   {
     // if the number of cards I have, plus the number in the bid is greater than four
     // then this is a cheat

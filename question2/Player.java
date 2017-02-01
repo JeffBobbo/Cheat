@@ -46,7 +46,7 @@ public interface Player
   * @param b: the last players bid
   * @return true if calling the last player a cheat.
   */
-  boolean callCheat(Bid b);
+  boolean callCheat(Bid b, int player);
 
   void broadcastCheat(int player, int caller, boolean correct);
 }
