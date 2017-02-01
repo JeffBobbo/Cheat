@@ -8,9 +8,9 @@ import question1.Hand;
 import question2.Strategy;
 import question2.BasicStrategy;
 
-public class ThinkerStrategy extends BasicStrategy
+public class MyStrategy extends BasicStrategy
 {
-  public ThinkerStrategy()
+  public MyStrategy()
   {
     super();
     played = new ArrayList<Bid>();

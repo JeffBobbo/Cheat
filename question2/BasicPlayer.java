@@ -76,6 +76,11 @@ public class BasicPlayer implements Player
     return strategy.callCheat(hand, b);
   }
 
+  public void broadcastCheat(int player, int caller, boolean correct)
+  {
+    strategy.broadcastCheat(player, caller, correct);
+  }
+
 
   private Hand hand;
   private Strategy strategy;

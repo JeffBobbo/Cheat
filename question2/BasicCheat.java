@@ -14,6 +14,8 @@ import question2.Bid;
 import question2.BasicPlayer;
 import question2.BasicStrategy;
 import question2.HumanStrategy;
+import question2.ThinkerStrategy;
+import question2.StrategyFactory;
 
 public class BasicCheat implements CardGame
 {
@@ -34,9 +36,12 @@ public class BasicCheat implements CardGame
   {
     nosPlayers = n;
     players = new Player[nosPlayers];
-    players[0] = (new BasicPlayer(new HumanStrategy(), this));
-    for (int i = 1; i < nosPlayers; ++i)
-      players[i] = (new BasicPlayer(new BasicStrategy(), this));
+    StrategyFactory sf = new StrategyFactory();
+    for (int i = 0; i < nosPlayers; ++i)
+    {
+      Strategy s = StrategyFactory.produce(sf.choose());
+      players[i] = (new BasicPlayer(s, this));
+    }
 
     currentBid = new Bid();
     currentBid.setRank(Card.Rank.TWO);
@@ -65,6 +70,8 @@ public class BasicCheat implements CardGame
           System.out.println("Player called cheat by Player " + (i+1));
           if (isCheat(currentBid)) //CHEAT CALLED CORRECTLY
           {
+            for (Player p : players)
+              p.broadcastCheat(currentPlayer, i, true);
             //Give the discard pile of cards to currentPlayer who then has to play again
             players[currentPlayer].addHand(discards);
             System.out.println("Player cheats!");
@@ -73,7 +80,8 @@ public class BasicCheat implements CardGame
           }
           else //CHEAT CALLED INCORRECTLY
           {
-            //Give cards to caller i who is new currentPlayer
+            for (Player p : players)
+              p.broadcastCheat(currentPlayer, i, false);
             System.out.println("Player Honest");
             currentPlayer = i;
             players[currentPlayer].addHand(discards);
@@ -93,8 +101,20 @@ public class BasicCheat implements CardGame
       //Go to the next player
       System.out.println("No Cheat Called");
 
-      currentPlayer = (currentPlayer+1) % nosPlayers;
     }
+    /*
+    Game bug fix:
+      The design of the game, as given, was floored in conjuction with
+      the required implementations of the strategies.
+      A scenario can arise where one player has all the twos and the other
+      has none, but it's their turn to play.
+      The player with all the twos can consitently correctly call cheat on the
+      player, as they have to claim to of laid a 2.
+
+      This is easily fixed by moving the turn to the player after the one who
+      just got called out
+     */
+    currentPlayer = (currentPlayer+1) % nosPlayers;
     return true;
   }
 

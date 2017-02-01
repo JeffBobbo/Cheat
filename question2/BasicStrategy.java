@@ -85,9 +85,9 @@ public class BasicStrategy implements Strategy
     return h.countRank(b.getRank()) + b.getCount() > 4;
   }
 
-  public void broadcastCheat()
+  public void broadcastCheat(int player, int caller, boolean correct)
   {
   }
 
-  private Random rg;
+  protected Random rg;
 }

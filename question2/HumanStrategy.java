@@ -38,21 +38,21 @@ public class HumanStrategy implements Strategy
     Hand play = new Hand();
     Card.Rank r = Card.Rank.TWO;
     System.out.println("You have:");
-    System.out.println(h);
     for (int z = 0; z < 13; ++z)
     {
       int c = h.countRank(r);
       if (c != 0)
-        System.out.println("  " + c + "x" + r);
+        System.out.print("  " + c + "x" + r + " ");
       r = r.getNext();
     }
+    System.out.print("\n");
     r = null;
     Scanner in = new Scanner(System.in);
     while (true)
-    { 
+    {
       System.out.print("What rank would you like to play?\n> ");
       String ans = in.nextLine().toLowerCase();
-      
+
       r = Card.Rank.fromString(ans);
       if (r == null)
       {
